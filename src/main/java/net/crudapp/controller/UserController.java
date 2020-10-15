@@ -3,6 +3,7 @@ package net.crudapp.controller;
 import net.crudapp.model.User;
 import net.crudapp.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @RequestMapping("/")
 public class UserController {
 
-    private UserService userService;
+    private  UserService userService;
 
     @Autowired
     public void setUserService(UserService userService) {
@@ -28,8 +29,7 @@ public class UserController {
     }
 
     @GetMapping("/user")
-    public String userPage(Model model) {
-        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    public String userPage(@AuthenticationPrincipal User user, Model model) {
         model.addAttribute("user", user);
         return "/userData";
     }
